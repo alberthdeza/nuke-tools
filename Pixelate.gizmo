@@ -3,11 +3,14 @@ version 12.2 v3
 push $cut_paste_input
 Group {
 name Pixelate
+help "Decrease the pixels in any image."
 tile_color 0xe9ff55ff
 selected true
 xpos -415
 ypos -398
 addUserKnob {20 header l Pixelate}
+addUserKnob {26 info l "" +STARTLINE T "Pixelate Tool v1.1\nLast updated: January 20th, 2021"}
+addUserKnob {26 "" +STARTLINE}
 addUserKnob {7 amt l Amount R 1 100}
 amt 1
 }

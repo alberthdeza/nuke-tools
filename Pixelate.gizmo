@@ -2,54 +2,83 @@ set cut_paste_input [stack 0]
 version 12.2 v3
 push $cut_paste_input
 Group {
-name Pixelate
-help "Decrease the pixels in any image."
-tile_color 0xe9ff55ff
-selected true
-xpos -414
-ypos -399
-addUserKnob {20 header l Pixelate}
-addUserKnob {7 amt l Amount R 1 100}
-amt 54
-addUserKnob {22 random l "Generate a random value" T "import random\n\nnuke.thisNode().knob('amt').setValue(random.randint(1,100))" +STARTLINE}
-addUserKnob {26 "" +STARTLINE}
-addUserKnob {26 info l "" +STARTLINE T "<font color=#666><b>Pixelate Tool v1.2</br>\n\nLast updated: January 20th, 2021</font"}
+ name Pixelate
+ help "Decrease the pixels in any image."
+ tile_color 0xe9ff55ff
+ selected true
+ xpos -53
+ ypos -122
+ addUserKnob {20 header l Pixelate}
+ addUserKnob {7 amt l "Pixelate Amount" R 1 100}
+ amt 1
+ addUserKnob {7 blur_amt l "Blur Amount" R 1 100}
+ blur_amt 1
+ addUserKnob {22 random l "Generate a random value" T "import random\n\nnuke.thisNode().knob('amt').setValue(random.randint(1,100))" +STARTLINE}
+ addUserKnob {26 space l "" -STARTLINE T "    "}
+ addUserKnob {6 mask_check l "Mask Connected?" -STARTLINE}
+ mask_check {{"\[exists input1]"}}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "<font color=#666><b>Pixelate Tool v1.2</br>\n\nLast updated: January 20th, 2021</font"}
 }
-Input {
-inputs 0
-name Input1
-xpos 0
-}
-Reformat {
-type "to box"
-box_width {{Input1.width/amt}}
-box_height {{Input1.height/amt}}
-box_fixed true
-name Reformat1
-xpos 0
-ypos 70
-}
-Crop {
-box {0 0 {Reformat1.box_width} {Reformat1.box_height}}
-crop false
-name Crop1
-xpos 0
-ypos 130
-}
-Reformat {
-type "to box"
-box_width {{Input1.width}}
-box_height {{Input1.height}}
-box_fixed true
-filter impulse
-name Reformat2
-selected true
-xpos 0
-ypos 188
-}
-Output {
-name Output1
-xpos 0
-ypos 300
-}
+ Input {
+  inputs 0
+  name InputMask
+  xpos 149
+  ypos 242
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -142
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input.width/amt}}
+  box_height {{Input.height/amt}}
+  box_fixed true
+  name Reformat1
+  xpos 0
+  ypos -72
+ }
+ Crop {
+  box {0 0 {Reformat1.box_width} {Reformat1.box_height}}
+  crop false
+  name Crop1
+  xpos 0
+  ypos -12
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input.width}}
+  box_height {{Input.height}}
+  box_fixed true
+  filter impulse
+  name Reformat2
+  xpos 0
+  ypos 46
+ }
+ Blur {
+  channels rgb
+  size {{blur_amt}}
+  name Blur1
+  selected true
+  xpos 0
+  ypos 98
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  bbox B
+  name Merge1
+  xpos 0
+  ypos 242
+  disable {{!mask_check}}
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 366
+ }
 end_group

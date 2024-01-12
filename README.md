@@ -1,7 +1,7 @@
 # nuke-tools
 Personal nuke tools
 
-##Pixelate
+##Pixelate <h2> tag
 #### *Last updates: January 19th, 2021*
 Decrease the numbers of pixels in one image.
 
